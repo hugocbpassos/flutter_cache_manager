@@ -136,7 +136,7 @@ class CacheObjectProvider {
   Future<List<CacheObject>> getObjectsOverCapacity(int capacity) async {
     List<Map> maps = await db.query(tableCacheObject,
         columns: null,
-        orderBy: "$columnTouched ASC",
+        orderBy: "$columnTouched DESC",
         where: "$columnTouched < ?",
         whereArgs: [now().subtract(new Duration(days: 1)).millisecondsSinceEpoch],
         limit: 100,
