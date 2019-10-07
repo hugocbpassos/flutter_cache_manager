@@ -67,11 +67,11 @@ class CacheObject {
 }
 
 class CacheObjectProvider {
-  @visibleForTesting
-  static DateTime Function() now = () => DateTime.now();
-
   Database db;
   String path;
+
+  @protected
+  DateTime get now => DateTime.now();
 
   CacheObjectProvider(this.path);
 
@@ -138,7 +138,9 @@ class CacheObjectProvider {
         columns: null,
         orderBy: "$columnTouched DESC",
         where: "$columnTouched < ?",
-        whereArgs: [now().subtract(new Duration(days: 1)).millisecondsSinceEpoch],
+        whereArgs: [
+          now.subtract(new Duration(days: 1)).millisecondsSinceEpoch
+        ],
         limit: 100,
         offset: capacity);
 
@@ -150,7 +152,7 @@ class CacheObjectProvider {
       tableCacheObject,
       where: "$columnTouched < ?",
       columns: null,
-      whereArgs: [now().subtract(maxAge).millisecondsSinceEpoch],
+      whereArgs: [now.subtract(maxAge).millisecondsSinceEpoch],
       limit: 100,
     );
 

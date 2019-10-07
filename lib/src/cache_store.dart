@@ -12,9 +12,6 @@ import 'package:sqflite/sqflite.dart';
 ///Released under MIT License.
 
 class CacheStore {
-  @visibleForTesting
-  static Duration cleanupRunMinInterval = Duration(seconds: 10);
-
   Map<String, Future<CacheObject>> _futureCache = new Map();
   Map<String, CacheObject> _memCache = new Map();
 
@@ -28,6 +25,7 @@ class CacheStore {
   final Duration _maxAge;
 
   DateTime lastCleanupRun = DateTime.now();
+  Duration cleanupRunMinInterval = const Duration(seconds: 10);
   Timer _scheduledCleanup;
 
   CacheStore(
@@ -35,10 +33,11 @@ class CacheStore {
     filePath = basePath;
     basePath.then((p) => _filePath = p);
 
-    _cacheObjectProvider = _getObjectProvider();
+    _cacheObjectProvider = getObjectProvider();
   }
 
-  Future<CacheObjectProvider> _getObjectProvider() async {
+  @protected
+  Future<CacheObjectProvider> getObjectProvider() async {
     var databasesPath = await getDatabasesPath();
     var path = p.join(databasesPath, "$storeKey.db");
 
