@@ -20,6 +20,7 @@ class DefaultCacheManager extends BaseCacheManager {
   static const key = "libCachedImageData";
 
   static DefaultCacheManager _instance;
+  
 
   /// The DefaultCacheManager that can be easily used directly. The code of
   /// this implementation can be used as inspiration for more complex cache
